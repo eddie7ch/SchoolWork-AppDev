@@ -1,6 +1,9 @@
 using System.Net.Sockets;
 using WinFormsApp1.Forms;
 
+// Allow the test project to access internal classes (e.g. UserService, ChatService)
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("AwesomeChat.Tests")]
+
 namespace WinFormsApp1
 {
     internal static class Program

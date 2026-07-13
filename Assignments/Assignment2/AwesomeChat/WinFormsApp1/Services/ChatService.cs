@@ -13,6 +13,11 @@ namespace WinFormsApp1.Services
     ///   - Proper resource disposal via using statements
     ///   - Read loop to handle fragmented TCP responses
     /// Design: Single Responsibility — this class only handles network communication.
+    ///
+    /// DCR (Design Change Request): Two new testable methods were extracted:
+    ///   - FormatMessage: builds the "Name: message" string (pure function, no I/O)
+    ///   - ValidateMessage: checks length/content rules before sending (pure function, no I/O)
+    /// Both methods are internal static, so tests can call them directly without a server.
     /// </summary>
     internal class ChatService
     {
@@ -21,18 +26,57 @@ namespace WinFormsApp1.Services
         private const int TimeoutMs = 5000; // 5 seconds — prevents indefinite blocking
         private const int BufferSize = 1024 * 1024; // 1 MB buffer (matches server)
 
+        /// <summary>Maximum allowed message length (characters).</summary>
+        internal const int MaxMessageLength = 2000;
+
+        // ── DCR: Pure helper methods — no network, no I/O; fully unit-testable ───
+
+        /// <summary>
+        /// Formats a message for transmission: "SenderName: message text".
+        /// Extracted so tests can verify the wire format independently of TCP.
+        /// </summary>
+        internal static string FormatMessage(string senderName, string message)
+            => $"{senderName}: {message}";
+
+        /// <summary>
+        /// Validates a message before it is sent.
+        /// Returns null if the message is valid, or an error description if it is not.
+        /// Null-safe — callers can use the return value directly in a conditional.
+        /// </summary>
+        /// <param name="message">The message text entered by the user.</param>
+        /// <returns>Null on success, or a human-readable error string on failure.</returns>
+        internal static string? ValidateMessage(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                return "Message cannot be empty.";
+
+            if (message.Length > MaxMessageLength)
+                return $"Message is too long ({message.Length} characters). Maximum allowed is {MaxMessageLength}.";
+
+            return null; // null → valid
+        }
+
+        // ── Public async API ───────────────────────────────────────────────────
+
         /// <summary>
         /// Sends a message to the server asynchronously and returns the server's response.
+        /// Validates the message before sending; throws ArgumentException for invalid input.
         /// Runs the TCP operation on a background thread to avoid blocking the UI.
         /// </summary>
         /// <param name="senderName">The sender's display name (prepended to the message).</param>
         /// <param name="message">The message text to send.</param>
         /// <returns>The decoded response string from the server.</returns>
+        /// <exception cref="ArgumentException">Thrown when the message fails validation.</exception>
         /// <exception cref="SocketException">Thrown when the server cannot be reached.</exception>
         /// <exception cref="TimeoutException">Thrown when the server does not respond within the timeout.</exception>
         public async Task<string> SendMessageAsync(string senderName, string message)
         {
-            string fullMessage = $"{senderName}: {message}";
+            // Validate before committing to a network call
+            string? validationError = ValidateMessage(message);
+            if (validationError != null)
+                throw new ArgumentException(validationError, nameof(message));
+
+            string fullMessage = FormatMessage(senderName, message);
             byte[] messageBytes = Encoding.Unicode.GetBytes(fullMessage);
 
             // Run blocking TCP call on a thread pool thread to keep UI responsive

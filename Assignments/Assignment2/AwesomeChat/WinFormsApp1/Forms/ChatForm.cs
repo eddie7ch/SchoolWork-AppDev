@@ -69,6 +69,16 @@ namespace WinFormsApp1.Forms
                 txtMessage.Clear();
                 SetStatus("Message sent.", Color.Gray);
             }
+            catch (ArgumentException ex)
+            {
+                // DCR: ChatService.ValidateMessage rejected the message (e.g. too long)
+                SetStatus("Message not sent — validation failed.", Color.Red);
+                MessageBox.Show(
+                    ex.Message,
+                    "Invalid Message",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
             catch (SocketException)
             {
                 // Server is not running or connection was refused (FR-10)
