@@ -1,0 +1,536 @@
+<!-- RUBRIC COVERAGE NOTES (internal reference, not submitted)
+Criterion 1 — Assess existing codebase:
+  Mastery: simple/to the point + starting points + missing elements + data processing location
+  → Section 2: Codebase Assessment covers all four
+
+Criterion 2 — Gather client requirements:
+  Mastery: limitations with 'because' + scope in/out (no gold plating) + user stories + feasibility + priorities
+  → Section 3: Scope covers in/out + limitations; Section 4: User Stories + Feasibility + Priorities
+
+Criterion 3 — Functional/Non-Functional requirements:
+  Mastery: simple and to the point + both described
+  → Section 5 & 6: concise tables
+
+Criterion 4 — Software resilience:
+  Mastery: multiple documentation examples (when things go wrong) + exception handling + resilience validation
+  → Section 7: scenario table with 'what goes wrong' + exception handling design + validation checklist
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project 1 – Chongtham, Eddie</title>
+  <style>
+    body {
+      font-family: "Calibri", "Arial", sans-serif;
+      font-size: 12pt;
+      color: #000000;
+      background: #ffffff;
+      margin: 2.54cm 2.54cm 2.54cm 2.54cm;
+      max-width: 920px;
+    }
+    h1 { font-size: 20pt; font-weight: bold; text-align: center; margin-bottom: 4px; }
+    h2 { font-size: 14pt; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 4px; margin-top: 36px; }
+    h3 { font-size: 12pt; font-weight: bold; margin-top: 18px; margin-bottom: 4px; }
+    .cover { text-align: center; margin-bottom: 48px; }
+    .cover p { margin: 4px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11pt; }
+    th { background-color: #1A1A1A; color: #FFFFFF; padding: 7px 10px; text-align: left; font-weight: bold; }
+    td { border: 1px solid #000; padding: 6px 10px; vertical-align: top; }
+    tr:nth-child(even) td { background-color: #F2F2F2; }
+    ul { margin: 4px 0 4px 18px; }
+    li { margin-bottom: 3px; }
+    code { font-family: "Consolas","Courier New",monospace; font-size: 10pt; background: #F2F2F2; padding: 1px 3px; }
+    .tag-in  { color: #000; font-weight: bold; }
+    .tag-out { color: #000; font-style: italic; }
+    .callout { background: #F2F2F2; border-left: 4px solid #1A1A1A; padding: 8px 12px; margin: 10px 0; font-size: 11pt; }
+    .w120 { width: 120px; }
+    .w160 { width: 160px; }
+    .w90  { width: 90px; }
+    .w80  { width: 80px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <h1>AWE Chat Application</h1>
+  <h1>Project 1: Analyze the Scope of the Task(s)<br/>and User Requirements</h1>
+  <p style="margin-top:16px;"><strong>Student Name:</strong> Eddie Chongtham</p>
+  <p><strong>Course:</strong> SODV2452-01 – Application Development</p>
+  <p><strong>Institution:</strong> Bow Valley College</p>
+  <p><strong>Date:</strong> July 12, 2026</p>
+  <p><strong>File:</strong> chongtham_eddie_assessment_part_1</p>
+</div>
+
+<!-- ===== 1. INTRODUCTION ===== -->
+<h2>1. Introduction</h2>
+<p>
+  This document analyzes the scope and user requirements for the <strong>AWE Chat</strong> application —
+  a Windows Forms desktop chat client written in C#. Users enter their name and exchange messages
+  with others through a central server managed by a separate backend team. This document covers
+  the client-side application and its integration point with the server via TCP.
+</p>
+<p>
+  The application has two Windows Forms: a <strong>Login Form</strong> and a <strong>Chat Form</strong>.
+  Analysis is based on the AWE Chat Requirements Document (Sammy) and the provided starter code.
+</p>
+
+<!-- ===== 2. CODEBASE ASSESSMENT ===== -->
+<h2>2. Codebase Assessment</h2>
+
+<h3>2.1 Starting Points — What Exists</h3>
+<p>The starter code contains two projects:</p>
+
+<table>
+  <thead><tr><th class="w160">File</th><th>Purpose</th><th class="w120">Location</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>Program.cs</code></td>
+      <td>Client application entry point. Contains the <code>sendMessage(byte[])</code> method — the integration interface provided by the backend team for sending/receiving messages over TCP. This is the only client-side code that exists; no UI has been built yet.</td>
+      <td>WinFormsApp1/</td>
+    </tr>
+    <tr>
+      <td><code>TCPServer.cs</code></td>
+      <td>Server simulator for local testing. Listens on <code>127.0.0.1:1234</code>, reads an incoming message, decodes it with <code>Encoding.Unicode</code>, and echoes it back. Provided by the backend team — not to be modified.</td>
+      <td>Server/</td>
+    </tr>
+    <tr>
+      <td><code>WinFormsApp1.sln</code></td>
+      <td>Visual Studio solution file tying both projects together.</td>
+      <td>Root</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>2.2 Missing Elements — What Needs to Be Built</h3>
+<table>
+  <thead><tr><th class="w160">Missing Element</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Login Form (UI)</strong></td>
+      <td>No Windows Form exists yet. A Login Form with a Name field, Remember Me checkbox, and Login button must be created.</td>
+    </tr>
+    <tr>
+      <td><strong>Chat Form (UI)</strong></td>
+      <td>No Chat Form exists. A Chat Form with a Message input, History (read-only), and Send button must be created.</td>
+    </tr>
+    <tr>
+      <td><strong>Input Validation</strong></td>
+      <td>No validation logic exists. Must prevent empty Name from opening the Chat window and show an error message.</td>
+    </tr>
+    <tr>
+      <td><strong>Data Persistence Layer</strong></td>
+      <td>No storage mechanism exists. Must save/load the username when Remember Me is checked (SQL Server, flat file, or config file).</td>
+    </tr>
+    <tr>
+      <td><strong>Error Handling in UI</strong></td>
+      <td>The current <code>catch</code> block only prints to console — no user-facing error feedback exists. Must surface connection failures to the UI.</td>
+    </tr>
+    <tr>
+      <td><strong>Async Network Calls</strong></td>
+      <td><code>sendMessage</code> is synchronous. Must be made async (<code>async/await</code>) to prevent blocking the UI thread.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>2.3 Where Data Gets Processed</h3>
+<table>
+  <thead><tr><th class="w160">Step</th><th>What Happens</th><th class="w120">Location</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Encode</strong></td>
+      <td>The client encodes a text message into a <code>byte[]</code> using <code>Encoding.Unicode</code> (UTF-16) before sending.</td>
+      <td>Client — caller of <code>sendMessage</code></td>
+    </tr>
+    <tr>
+      <td><strong>2. Send</strong></td>
+      <td><code>sendMessage</code> creates a <code>TcpClient</code>, opens a <code>NetworkStream</code>, and writes the bytes to the server via <code>stream.Write()</code>.</td>
+      <td><code>Program.cs</code></td>
+    </tr>
+    <tr>
+      <td><strong>3. Server Processes</strong></td>
+      <td>The server reads the bytes, calls <code>cleanMessage()</code> to strip null characters, then re-encodes and writes the message back to the client stream.</td>
+      <td><code>TCPServer.cs</code></td>
+    </tr>
+    <tr>
+      <td><strong>4. Receive</strong></td>
+      <td><code>sendMessage</code> reads the server's response bytes via <code>stream.Read()</code> into a 1 MB buffer and returns the byte array to the caller.</td>
+      <td><code>Program.cs</code></td>
+    </tr>
+    <tr>
+      <td><strong>5. Display</strong></td>
+      <td>The caller decodes the response bytes and appends the message to the History field on the Chat Form. <em>(Not yet implemented — to be built.)</em></td>
+      <td>Chat Form (to be built)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== 3. PROJECT SCOPE ===== -->
+<h2>3. Project Scope</h2>
+
+<h3>3.1 In Scope and Out of Scope</h3>
+<div class="callout">
+  <strong>No Gold Plating:</strong> Only features explicitly required by the client (Sammy) or directly necessary to support them are in scope. All other enhancements are excluded.
+</div>
+
+<table>
+  <thead><tr><th class="w90">Status</th><th>Item</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td><strong class="tag-in">IN SCOPE</strong></td><td>Login Form with Name field, Remember Me checkbox, Login button</td><td>Explicitly required by Requirements Document</td></tr>
+    <tr><td><strong class="tag-in">IN SCOPE</strong></td><td>Name validation (empty check + error message)</td><td>Explicitly required by Requirements Document</td></tr>
+    <tr><td><strong class="tag-in">IN SCOPE</strong></td><td>Chat Form with Message field, History field (read-only), Send button</td><td>Explicitly required by Requirements Document</td></tr>
+    <tr><td><strong class="tag-in">IN SCOPE</strong></td><td>TCP integration using provided <code>sendMessage(byte[])</code> interface</td><td>Required to communicate with backend server</td></tr>
+    <tr><td><strong class="tag-in">IN SCOPE</strong></td><td>Data persistence for username (SQL Server / flat file / config file)</td><td>Required to support Remember Me feature</td></tr>
+    <tr><td><strong class="tag-in">IN SCOPE</strong></td><td>Connection error feedback to user</td><td>Required for reliability and usability</td></tr>
+    <tr><td><em class="tag-out">OUT OF SCOPE</em></td><td>Server-side development</td><td>Server is managed by the backend team; not this team's responsibility</td></tr>
+    <tr><td><em class="tag-out">OUT OF SCOPE</em></td><td>User authentication / passwords</td><td>Not mentioned in requirements — no gold plating</td></tr>
+    <tr><td><em class="tag-out">OUT OF SCOPE</em></td><td>Chat rooms or channels</td><td>Not mentioned in requirements — single shared chat only</td></tr>
+    <tr><td><em class="tag-out">OUT OF SCOPE</em></td><td>Message encryption (TLS/SSL)</td><td>Not required by stakeholder — beyond stated scope</td></tr>
+    <tr><td><em class="tag-out">OUT OF SCOPE</em></td><td>File sharing or media messages</td><td>Not mentioned in requirements</td></tr>
+    <tr><td><em class="tag-out">OUT OF SCOPE</em></td><td>Mobile or web client</td><td>Platform is explicitly Windows desktop (WinForms)</td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 Limitations</h3>
+<table>
+  <thead><tr><th class="w160">Limitation</th><th>Explanation</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>No persistent chat history across sessions</strong></td>
+      <td>The History field is cleared when the application closes, <strong>because</strong> the requirements only specify displaying messages during the current session — no session log storage is required.</td>
+    </tr>
+    <tr>
+      <td><strong>Single server endpoint (hardcoded)</strong></td>
+      <td>The server address is fixed at <code>127.0.0.1:1234</code>, <strong>because</strong> the backend team has defined this as the integration contract for the local simulator and no requirement for configurable endpoints was stated.</td>
+    </tr>
+    <tr>
+      <td><strong>Only username is persisted</strong></td>
+      <td>The persistence layer stores only the user's name, <strong>because</strong> the Requirements Document specifies no other data to be saved — storing more would be gold plating.</td>
+    </tr>
+    <tr>
+      <td><strong>No real-time push (polling required)</strong></td>
+      <td>The provided <code>sendMessage</code> interface is request-response only, <strong>because</strong> the server simulator does not implement a push/subscription model — continuous message receipt would require polling or a new server interface.</td>
+    </tr>
+    <tr>
+      <td><strong>Windows only</strong></td>
+      <td>The application runs on Windows exclusively, <strong>because</strong> Windows Forms is a Windows-only UI framework as specified in the requirements.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>3.3 Feasibility Assessment</h3>
+<table>
+  <thead><tr><th class="w160">Requirement</th><th>Feasibility</th><th class="w120">Verdict</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Login Form + Chat Form (WinForms)</td>
+      <td>Standard WinForms development — well-supported in C# .NET. Visual Studio designer makes this straightforward.</td>
+      <td><strong>Feasible</strong></td>
+    </tr>
+    <tr>
+      <td>TCP integration via <code>sendMessage</code></td>
+      <td>Interface already provided by backend team. Client only needs to call it with encoded bytes. No custom networking logic needed.</td>
+      <td><strong>Feasible</strong></td>
+    </tr>
+    <tr>
+      <td>Remember Me (data persistence)</td>
+      <td>Storing a single string to a config file or SQLite/SQL Server is a solved problem in .NET. Local SQL Server may require installation on client machines.</td>
+      <td><strong>Feasible</strong> (flat file or config file recommended to reduce setup)</td>
+    </tr>
+    <tr>
+      <td>Non-blocking UI (async/await)</td>
+      <td>C# async/await is built into .NET. Converting <code>sendMessage</code> to async is a well-understood pattern.</td>
+      <td><strong>Feasible</strong></td>
+    </tr>
+    <tr>
+      <td>Real-time multi-user chat</td>
+      <td>The current server simulator is echo-only (returns the sender's message). True multi-user broadcasting requires server-side changes. This is outside client scope.</td>
+      <td><strong>Partially feasible</strong> (client-side limited by server capability)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>3.4 Requirements Priorities</h3>
+<table>
+  <thead><tr><th class="w80">Priority</th><th class="w160">Requirement</th><th>Justification</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>P1 — Must Have</strong></td>
+      <td>Login Form + Chat Form UI</td>
+      <td>Core deliverable — without these forms the application does not exist.</td>
+    </tr>
+    <tr>
+      <td><strong>P1 — Must Have</strong></td>
+      <td>Name validation</td>
+      <td>Explicitly required; prevents incorrect application state.</td>
+    </tr>
+    <tr>
+      <td><strong>P1 — Must Have</strong></td>
+      <td>Send message via TCP</td>
+      <td>Core chat functionality — the primary purpose of the application.</td>
+    </tr>
+    <tr>
+      <td><strong>P1 — Must Have</strong></td>
+      <td>Display messages in History</td>
+      <td>Core chat functionality — users cannot participate without seeing messages.</td>
+    </tr>
+    <tr>
+      <td><strong>P2 — Should Have</strong></td>
+      <td>Remember Me / data persistence</td>
+      <td>Explicitly required by client; improves UX for returning users.</td>
+    </tr>
+    <tr>
+      <td><strong>P2 — Should Have</strong></td>
+      <td>Connection error feedback</td>
+      <td>Required for reliability; prevents silent failures from confusing users.</td>
+    </tr>
+    <tr>
+      <td><strong>P3 — Nice to Have</strong></td>
+      <td>Async I/O + retry logic</td>
+      <td>Improves robustness and responsiveness but application functions without it.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== 4. FUNCTIONAL REQUIREMENTS ===== -->
+<h2>4. Functional Requirements</h2>
+<p>What the system must <em>do</em>, extracted from the AWE Chat Requirements Document.</p>
+
+<table>
+  <thead><tr><th class="w80">ID</th><th>Requirement</th><th class="w120">Source</th></tr></thead>
+  <tbody>
+    <tr><td>FR-01</td><td><strong>Login Window:</strong> App displays a Login window on startup with a Name field, Remember Me checkbox, and Login button.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-02</td><td><strong>Name Validation:</strong> Login button validates name is not empty. If empty → show error message; do not open Chat window.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-03</td><td><strong>Open Chat:</strong> If name is valid, close Login window and open Chat window.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-04</td><td><strong>Remember Me:</strong> If checkbox is checked → save name to storage. On next launch → pre-populate Name field with saved name.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-05</td><td><strong>Message Field:</strong> Chat window has a text input for composing messages.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-06</td><td><strong>Send Button:</strong> Clicking Send encodes the message and calls <code>sendMessage(byte[])</code> to transmit to the server.</td><td>Requirements Doc + Program.cs</td></tr>
+    <tr><td>FR-07</td><td><strong>History Field:</strong> Non-editable field displaying all sent and received messages in the current session, in chronological order.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-08</td><td><strong>TCP Communication:</strong> App communicates with the server using the provided <code>sendMessage(byte[])</code> interface over TCP at <code>127.0.0.1:1234</code>.</td><td>Program.cs</td></tr>
+    <tr><td>FR-09</td><td><strong>Data Storage:</strong> Username persistence uses one of: local SQL Server (recommended), flat file, or configuration file.</td><td>Requirements Doc</td></tr>
+    <tr><td>FR-10</td><td><strong>Error Feedback:</strong> If a connection error occurs, display a visible error message to the user. Do not crash.</td><td>Requirements Doc + Program.cs catch block</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== 5. NON-FUNCTIONAL REQUIREMENTS ===== -->
+<h2>5. Non-Functional Requirements</h2>
+<p>Quality attributes and constraints the system must satisfy.</p>
+
+<table>
+  <thead><tr><th class="w80">ID</th><th>Requirement</th><th class="w120">Category</th></tr></thead>
+  <tbody>
+    <tr><td>NFR-01</td><td><strong>Platform:</strong> Runs on Windows as a WinForms .NET desktop application.</td><td>Platform</td></tr>
+    <tr><td>NFR-02</td><td><strong>Language:</strong> Developed in C#.</td><td>Technology</td></tr>
+    <tr><td>NFR-03</td><td><strong>Encoding:</strong> Messages encoded in Unicode (UTF-16) to match the server's <code>Encoding.Unicode</code>.</td><td>Interoperability</td></tr>
+    <tr><td>NFR-04</td><td><strong>Usability:</strong> A new user can log in and send a first message within 30 seconds of launch.</td><td>Usability</td></tr>
+    <tr><td>NFR-05</td><td><strong>Responsiveness:</strong> UI stays responsive at all times — TCP operations must not block the UI thread.</td><td>Performance</td></tr>
+    <tr><td>NFR-06</td><td><strong>Reliability:</strong> Application does not crash on connection failure; user sees a meaningful error message.</td><td>Reliability</td></tr>
+    <tr><td>NFR-07</td><td><strong>Validation:</strong> Empty Name field triggers an error message and prevents the Chat window from opening.</td><td>Correctness</td></tr>
+    <tr><td>NFR-08</td><td><strong>Data Security:</strong> Stored username is local-only; not transmitted beyond the chat protocol.</td><td>Security</td></tr>
+    <tr><td>NFR-09</td><td><strong>Maintainability:</strong> Separation of concerns — UI, network, and persistence layers are distinct.</td><td>Maintainability</td></tr>
+    <tr><td>NFR-10</td><td><strong>Resource Management:</strong> TCP connections and streams are disposed after every transaction.</td><td>Reliability</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== 6. USER STORIES ===== -->
+<h2>6. User Stories</h2>
+<p>Format: <em>"As a [role], I want to [action] so that [benefit]."</em></p>
+
+<table>
+  <thead><tr><th class="w80">ID</th><th>User Story</th><th>Acceptance Criteria</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>US-01</td>
+      <td>As a <strong>new user</strong>, I want to enter my name and click Login so that the app knows who I am before I chat.</td>
+      <td><ul>
+        <li>Login window shown on launch with Name field and Login button.</li>
+        <li>Non-empty name → Chat window opens.</li>
+        <li>Empty name → error shown, Chat window stays closed.</li>
+      </ul></td>
+    </tr>
+    <tr>
+      <td>US-02</td>
+      <td>As a <strong>returning user</strong>, I want to check Remember Me so that my name is saved and pre-filled next time I open the app.</td>
+      <td><ul>
+        <li>Remember Me checkbox visible on Login form.</li>
+        <li>Checked + Login → name saved to storage.</li>
+        <li>Next launch → Name field pre-populated.</li>
+        <li>Unchecked → nothing saved, field blank next launch.</li>
+      </ul></td>
+    </tr>
+    <tr>
+      <td>US-03</td>
+      <td>As a <strong>user</strong>, I want to type a message and click Send so that I can communicate with others in the chat.</td>
+      <td><ul>
+        <li>Message field and Send button on Chat window.</li>
+        <li>Send transmits the message to the server.</li>
+        <li>Message field clears after sending.</li>
+      </ul></td>
+    </tr>
+    <tr>
+      <td>US-04</td>
+      <td>As a <strong>user</strong>, I want all messages shown in the History field so that I can follow the conversation.</td>
+      <td><ul>
+        <li>History field is non-editable.</li>
+        <li>All sent and received messages appear in order with sender's name.</li>
+        <li>Auto-scrolls to most recent message.</li>
+      </ul></td>
+    </tr>
+    <tr>
+      <td>US-05</td>
+      <td>As a <strong>user</strong>, I want to be told when a message fails to send so that I know it was not delivered.</td>
+      <td><ul>
+        <li>Visible error message shown on connection failure.</li>
+        <li>App does not crash.</li>
+        <li>Failed message not silently discarded.</li>
+      </ul></td>
+    </tr>
+    <tr>
+      <td>US-06</td>
+      <td>As a <strong>developer</strong>, I want a defined <code>sendMessage</code> interface so that I can integrate with the server without knowing its internals.</td>
+      <td><ul>
+        <li><code>sendMessage(byte[])</code> accepts Unicode-encoded bytes and returns the server's response bytes.</li>
+        <li>Connection failures surface a meaningful error to the caller.</li>
+      </ul></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== 7. SOFTWARE RESILIENCE ===== -->
+<h2>7. Software Resilience Strategy</h2>
+
+<h3>7.1 Exception Handling Design</h3>
+<p>
+  The current <code>sendMessage</code> in <strong>Program.cs</strong> has a broad
+  <code>catch (Exception e)</code> that only prints to the console — no error reaches the UI and
+  the method returns a zeroed byte array with no signal of failure. The following design replaces
+  this with structured exception handling:
+</p>
+<table>
+  <thead><tr><th class="w160">Exception Type</th><th>Trigger</th><th>Handling Action</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>SocketException</code></td>
+      <td>Server not running, port refused, or read/write timeout exceeded.</td>
+      <td>Catch specifically; show dialog: <em>"Could not connect to the chat server. Please try again."</em> Log the error code.</td>
+    </tr>
+    <tr>
+      <td><code>IOException</code></td>
+      <td>Network stream drops mid-transfer (cable pull, Wi-Fi drop).</td>
+      <td>Catch specifically; notify user the message may not have been delivered; attempt reconnect.</td>
+    </tr>
+    <tr>
+      <td><code>TimeoutException</code></td>
+      <td>Server accepts connection but does not respond within the timeout window (5 seconds).</td>
+      <td>Catch; show dialog: <em>"The server is not responding. Check your connection and try again."</em></td>
+    </tr>
+    <tr>
+      <td><code>ObjectDisposedException</code></td>
+      <td>Stream or client used after disposal (e.g., in a race condition).</td>
+      <td>Catch; log internally; do not surface technical details to user. Show generic retry prompt.</td>
+    </tr>
+    <tr>
+      <td>General <code>Exception</code></td>
+      <td>Any unexpected error not covered above.</td>
+      <td>Catch as fallback; log full stack trace to a local error log file; show: <em>"An unexpected error occurred."</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>7.2 When Things Go Wrong — Scenario Documentation</h3>
+<table>
+  <thead><tr><th class="w160">Scenario</th><th>What Breaks</th><th>Current Behaviour</th><th>Required Behaviour</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Server is not running</strong></td>
+      <td><code>TcpClient</code> constructor throws <code>SocketException</code> (connection refused).</td>
+      <td>Exception message printed to console only. Method returns empty byte array. UI receives no signal — appears to send successfully.</td>
+      <td>UI displays: <em>"Cannot connect to the server. Please ensure the server is running."</em> Send button re-enabled.</td>
+    </tr>
+    <tr>
+      <td><strong>Server crashes mid-message</strong></td>
+      <td><code>stream.Read()</code> returns 0 or throws <code>IOException</code>.</td>
+      <td>Exception swallowed. Caller gets a zeroed 1 MB buffer, attempts to decode garbage, may display corrupted text.</td>
+      <td>Detect zero-byte read; treat as disconnection; notify user message was not confirmed; log the event.</td>
+    </tr>
+    <tr>
+      <td><strong>Server is slow / hangs</strong></td>
+      <td><code>stream.Read()</code> blocks indefinitely — no timeout configured.</td>
+      <td>UI thread freezes completely if called synchronously. Application appears to crash from user perspective.</td>
+      <td>Set <code>ReceiveTimeout = 5000 ms</code>. Use <code>async/await</code>. If timeout: show <em>"Server not responding."</em></td>
+    </tr>
+    <tr>
+      <td><strong>Large message / fragmented response</strong></td>
+      <td>Single <code>stream.Read()</code> call returns fewer bytes than the full message.</td>
+      <td>Partial message silently returned. History field shows truncated or garbled text.</td>
+      <td>Loop on <code>stream.ReadAsync()</code> until full response received. Use message-length header for framing.</td>
+    </tr>
+    <tr>
+      <td><strong>Repeated failures exhaust ports</strong></td>
+      <td><code>TcpClient</code> and <code>NetworkStream</code> not disposed when exception thrown before <code>client.Close()</code>.</td>
+      <td>Each failed send leaks a TCP connection. After many failures the OS runs out of available ports; application stops working.</td>
+      <td>Wrap in <code>using</code> blocks. Resources disposed whether success or failure.</td>
+    </tr>
+    <tr>
+      <td><strong>User clicks Send rapidly</strong></td>
+      <td>Multiple concurrent TCP connections opened before earlier ones complete.</td>
+      <td>Race condition — multiple threads read/write concurrently; responses may be delivered out of order.</td>
+      <td>Disable Send button while a send is in progress. Re-enable on completion or failure.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>7.3 Resilience Properties Validation</h3>
+<table>
+  <thead><tr><th class="w160">Property</th><th>How to Validate</th><th class="w120">Pass Condition</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Fail gracefully</strong></td>
+      <td>Start the client without the server running. Click Send.</td>
+      <td>Error dialog shown. App does not crash. Send button re-enabled.</td>
+    </tr>
+    <tr>
+      <td><strong>No UI freeze</strong></td>
+      <td>Introduce a 10-second delay in the server. Click Send. Try to type in the Message field.</td>
+      <td>UI remains responsive. Message field accepts input. Timeout fires after 5 seconds.</td>
+    </tr>
+    <tr>
+      <td><strong>No resource leak</strong></td>
+      <td>Send 100 messages rapidly with and without server running. Check Windows Task Manager for handle count.</td>
+      <td>Handle count does not grow unboundedly.</td>
+    </tr>
+    <tr>
+      <td><strong>Complete message delivery</strong></td>
+      <td>Send a message &gt;10,000 characters. Verify History field shows the complete message.</td>
+      <td>No truncation. All characters appear correctly in History.</td>
+    </tr>
+    <tr>
+      <td><strong>Correct error type propagation</strong></td>
+      <td>Simulate each failure scenario in section 7.2. Verify the correct dialog appears for each.</td>
+      <td>User sees specific, helpful error message matching each failure type.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>7.4 Data Backup Strategy</h3>
+<p>
+  To prevent data loss, the following backup considerations apply:
+</p>
+<ul>
+  <li><strong>Username persistence file:</strong> The flat file or config file storing the username should be written atomically (write to a temp file, then rename) so a crash during write does not corrupt the saved name.</li>
+  <li><strong>Unsent messages:</strong> If a send operation fails, the message should be preserved in memory (outgoing queue) so the user can retry rather than losing it.</li>
+  <li><strong>Chat history:</strong> Session chat history is in-memory only by design (out of scope per requirements). No backup needed for the current scope.</li>
+</ul>
+
+<h3>7.5 Implementation Priority for Resilience Fixes</h3>
+<ol>
+  <li><strong>Must fix first:</strong> Resource disposal with <code>using</code> + read/write timeouts — prevents port exhaustion and freezes.</li>
+  <li><strong>Must fix second:</strong> Convert to <code>async/await</code> + propagate exceptions to UI — keeps app responsive and gives user feedback.</li>
+  <li><strong>Should add:</strong> Message framing (length-prefix) + disable Send button during send — correctness and UX.</li>
+  <li><strong>Nice to have:</strong> Retry with exponential backoff + outgoing message queue — production-quality reliability.</li>
+</ol>
+
+</body>
+</html>
