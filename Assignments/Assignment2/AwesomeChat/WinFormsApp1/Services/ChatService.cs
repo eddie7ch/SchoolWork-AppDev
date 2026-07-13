@@ -36,6 +36,7 @@ namespace WinFormsApp1.Services
 
             return null;
         }
+
         public async Task<string> SendMessageAsync(string senderName, string message)
         {
             string? validationError = ValidateMessage(message);

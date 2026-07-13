@@ -1,4 +1,5 @@
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
 using WinFormsApp1.Services;
 
 namespace WinFormsApp1.Forms
@@ -7,6 +8,7 @@ namespace WinFormsApp1.Forms
     /// Login form — collects username, handles Remember Me, opens ChatForm.
     /// Design: Separation of Concerns — UI only; persistence delegated to UserService.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class LoginForm : Form
     {
         private readonly UserService _userService;

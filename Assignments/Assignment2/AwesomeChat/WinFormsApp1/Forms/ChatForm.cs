@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using System.Diagnostics.CodeAnalysis;
 using Serilog;
 using WinFormsApp1.Services;
 
@@ -8,6 +9,7 @@ namespace WinFormsApp1.Forms
     /// Chat form — send/receive messages via ChatService.
     /// Design: Separation of Concerns — UI only; networking delegated to ChatService.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class ChatForm : Form
     {
         private readonly string _username;

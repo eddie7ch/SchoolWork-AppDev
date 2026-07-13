@@ -81,6 +81,14 @@ dotnet publish WinFormsApp1/WinFormsApp1.csproj -c Release -r win-x64 --self-con
 # Output: Installer/Output/AwesomeChatSetup.exe
 ```
 
+### Installer Test Results
+
+| Machine | OS | .NET pre-installed | Install | Launch | Uninstall |
+|---|---|---|---|---|---|
+| Dev machine (Eddie) | Windows 11 | .NET 10 | ✅ | ✅ | ✅ |
+
+> The installer is **self-contained** — it bundles the entire .NET runtime. No separate runtime installation is required on target machines. Tested install, application launch, and uninstall via Control Panel on the development machine. Classmates can verify on their own machines using the same `AwesomeChatSetup.exe`.
+
 ---
 
 ## User Manual

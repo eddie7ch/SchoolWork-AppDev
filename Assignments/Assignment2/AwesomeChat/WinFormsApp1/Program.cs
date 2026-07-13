@@ -1,10 +1,13 @@
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
 using WinFormsApp1.Forms;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("AwesomeChat.Tests")]
 
 namespace WinFormsApp1
 {
+    // ExcludeFromCodeCoverage: entry point + Serilog setup are not unit-testable
+    [ExcludeFromCodeCoverage]
     internal static class Program
     {
         [STAThread]
@@ -35,3 +38,4 @@ namespace WinFormsApp1
         }
     }
 }
+
