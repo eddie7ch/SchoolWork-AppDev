@@ -5,13 +5,8 @@ using WinFormsApp1.Services;
 namespace AwesomeChat.Tests
 {
     /// <summary>
-    /// Unit tests for UserService (username persistence layer).
-    /// Tests cover: save, load, clear, edge cases, and atomic write safety.
-    ///
-    /// DCR note: Tests use the internal UserService(string storageFolder) constructor added in the DCR
-    /// so that I/O is redirected to a temp directory — no %AppData% is touched during testing.
-    ///
-    /// Code coverage target: ~65% of UserService (Mastery criterion — Project 3).
+    /// Unit tests for UserService — save, load, clear, and edge cases.
+    /// Uses the internal constructor to redirect I/O to a temp folder (no %AppData% touched).
     /// </summary>
     public class UserServiceTests : IDisposable
     {

@@ -4,16 +4,8 @@ using WinFormsApp1.Services;
 namespace AwesomeChat.Tests
 {
     /// <summary>
-    /// Unit tests for ChatService — focusing on the pure, testable methods
-    /// extracted during the DCR:
-    ///   - FormatMessage: pure function, no network I/O
-    ///   - ValidateMessage: pure function, no network I/O
-    ///
-    /// SendMessageAsync (TCP) is NOT unit-tested here because it requires a live
-    /// server on 127.0.0.1:1234.  It is covered by manual integration testing
-    /// documented in DebuggingNotes.md.
-    ///
-    /// Code coverage: these tests cover ~70% of the lines introduced by the DCR.
+    /// Unit tests for ChatService.FormatMessage and ChatService.ValidateMessage.
+    /// SendMessageAsync (TCP) is covered by manual integration testing in DebuggingNotes.md.
     /// </summary>
     public class ChatServiceTests
     {
