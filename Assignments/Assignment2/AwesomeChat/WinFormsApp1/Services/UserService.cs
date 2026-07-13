@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Serilog;
 
 namespace WinFormsApp1.Services
 {
@@ -33,19 +34,26 @@ namespace WinFormsApp1.Services
             string tempPath = _userFilePath + ".tmp";
             File.WriteAllText(tempPath, username.Trim());
             File.Move(tempPath, _userFilePath, overwrite: true);
+            Log.Debug("Username saved: {Username}", username.Trim());
         }
 
         public string LoadUsername()
         {
             if (!File.Exists(_userFilePath))
+            {
+                Log.Debug("No saved username found");
                 return string.Empty;
+            }
 
             try
             {
-                return File.ReadAllText(_userFilePath).Trim();
+                string name = File.ReadAllText(_userFilePath).Trim();
+                Log.Debug("Loaded saved username: {Username}", name);
+                return name;
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                Log.Warning(ex, "Failed to read username file");
                 return string.Empty;
             }
         }
@@ -53,7 +61,10 @@ namespace WinFormsApp1.Services
         public void ClearUsername()
         {
             if (File.Exists(_userFilePath))
+            {
                 File.Delete(_userFilePath);
+                Log.Debug("Saved username cleared");
+            }
         }
     }
 }

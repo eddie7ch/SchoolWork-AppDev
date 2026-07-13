@@ -2,6 +2,7 @@ using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace WinFormsApp1.Services
 {
@@ -13,8 +14,8 @@ namespace WinFormsApp1.Services
     {
         private const string ServerAddress = "127.0.0.1";
         private const int ServerPort = 1234;
-        private const int TimeoutMs = 5000; // 5 seconds — prevents indefinite blocking
-        private const int BufferSize = 1024 * 1024; // 1 MB buffer (matches server)
+        internal const int TimeoutMs = 5000;
+        private const int BufferSize = 1024 * 1024;
 
         /// <summary>Maximum allowed message length (characters).</summary>
         internal const int MaxMessageLength = 2000;
@@ -41,8 +42,13 @@ namespace WinFormsApp1.Services
             if (validationError != null)
                 throw new ArgumentException(validationError, nameof(message));
 
+            Log.Debug("Sending message from {Sender} ({Length} chars)", senderName, message.Length);
+
             byte[] messageBytes = Encoding.Unicode.GetBytes(FormatMessage(senderName, message));
             byte[] responseBytes = await Task.Run(() => SendOverTcp(messageBytes));
+
+            Log.Information("Message delivered; server response {Bytes} bytes", responseBytes.Length);
+
             return Encoding.Unicode.GetString(responseBytes).TrimEnd('\0');
         }
 

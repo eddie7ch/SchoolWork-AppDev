@@ -1,3 +1,4 @@
+using Serilog;
 using WinFormsApp1.Services;
 
 namespace WinFormsApp1.Forms
@@ -33,6 +34,7 @@ namespace WinFormsApp1.Forms
 
             if (string.IsNullOrEmpty(username))
             {
+                Log.Warning("Login attempted with empty username");
                 lblError.Text = "Name cannot be empty. Please enter your name.";
                 txtName.Focus();
                 return;
@@ -44,6 +46,8 @@ namespace WinFormsApp1.Forms
                 _userService.SaveUsername(username);
             else
                 _userService.ClearUsername();
+
+            Log.Information("User {Username} logged in", username);
 
             var chatForm = new ChatForm(username);
             chatForm.Show();

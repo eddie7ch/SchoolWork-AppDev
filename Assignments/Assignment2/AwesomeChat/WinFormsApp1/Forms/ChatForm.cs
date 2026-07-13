@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using Serilog;
 using WinFormsApp1.Services;
 
 namespace WinFormsApp1.Forms
@@ -54,18 +55,21 @@ namespace WinFormsApp1.Forms
             }
             catch (ArgumentException ex)
             {
+                Log.Warning("Message validation failed: {Error}", ex.Message);
                 SetStatus("Message not sent — validation failed.", Color.Red);
                 MessageBox.Show(ex.Message, "Invalid Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            catch (SocketException)
+            catch (SocketException ex)
             {
+                Log.Error(ex, "TCP connection failed — server may be offline");
                 SetStatus("Error: Cannot connect to server.", Color.Red);
                 MessageBox.Show(
                     "Could not connect to the chat server.\nPlease ensure the server is running and try again.",
                     "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
+                Log.Error(ex, "Server did not respond within {Timeout}ms", ChatService.TimeoutMs);
                 SetStatus("Error: Server not responding.", Color.Red);
                 MessageBox.Show(
                     "The server is not responding.\nPlease check your connection and try again.",
@@ -73,6 +77,7 @@ namespace WinFormsApp1.Forms
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Unexpected error during message send");
                 SetStatus("Unexpected error.", Color.Red);
                 MessageBox.Show($"An unexpected error occurred:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
