@@ -90,7 +90,7 @@
   <h2>1. What was your learning strategy in this course?</h2>
 
   <p>
-    My primary strategy was to learn by building. Rather than reading documentation in isolation, I paired every concept with immediate hands-on implementation. When the course introduced Windows Forms and TCP networking, I did not stop at the provided starter code — I used it as a starting point to understand what was there, identified what was missing, and then built the missing pieces myself.
+    My primary strategy was to learn by building. Rather than reading documentation in isolation, I paired every concept with immediate hands-on implementation. When the course introduced Windows Forms and TCP networking, I did not stop at the provided starter code; I used it as a starting point to understand what was there, identified what was missing, and then built the missing pieces myself.
   </p>
 
   <p>
@@ -98,7 +98,7 @@
   </p>
 
   <p>
-    For debugging and testing, I practised explaining code behaviour out loud before running it — predicting what a method would do, then verifying with breakpoints. This habit caught several subtle bugs before they caused problems (for example, recognising that writing a file and then the app crashing mid-write could corrupt the saved username, which led me to implement an atomic write using a temp file and rename).
+    For debugging and testing, I practised explaining code behaviour out loud before running it, predicting what a method would do, then verifying with breakpoints. This habit caught several subtle bugs before they caused problems (for example, recognising that writing a file and then the app crashing mid-write could corrupt the saved username, which led me to implement an atomic write using a temp file and rename).
   </p>
 
   <h2>2. What were the difficulties you faced and how did you overcome them?</h2>
@@ -108,15 +108,15 @@
   </p>
 
   <p>
-    <strong>Making code unit-testable without a live server.</strong> The original <code>ChatService</code> and <code>UserService</code> were difficult to test because they were tightly coupled to the network and the file system. I resolved this in two ways: for <code>UserService</code>, I added a secondary constructor that accepts a custom storage folder, so tests could redirect all I/O to a temporary directory. For <code>ChatService</code>, I extracted the message formatting and validation logic into pure functions with no side effects, so tests could verify correctness without opening a TCP connection. This pattern — separating pure logic from I/O — is something I will carry into every project going forward.
+    <strong>Making code unit-testable without a live server.</strong> The original <code>ChatService</code> and <code>UserService</code> were difficult to test because they were tightly coupled to the network and the file system. I resolved this in two ways: for <code>UserService</code>, I added a secondary constructor that accepts a custom storage folder, so tests could redirect all I/O to a temporary directory. For <code>ChatService</code>, I extracted the message formatting and validation logic into pure functions with no side effects, so tests could verify correctness without opening a TCP connection. This pattern of separating pure logic from I/O is something I will carry into every project going forward.
   </p>
 
   <p>
-    <strong>Test isolation with xUnit.</strong> Initially I tried to redirect <code>%APPDATA%</code> via an environment variable, but this approach was fragile — it was possible for a previous test run to contaminate the environment for the next one. Switching to the injected constructor completely solved the problem: each test created its own unique temp folder and deleted it when done, with no shared state between tests.
+    <strong>Test isolation with xUnit.</strong> Initially I tried to redirect <code>%APPDATA%</code> via an environment variable, but this approach was fragile, as it was possible for a previous test run to contaminate the environment for the next one. Switching to the injected constructor completely solved the problem: each test created its own unique temp folder and deleted it when done, with no shared state between tests.
   </p>
 
   <p>
-    <strong>Packaging for distribution.</strong> I had not previously packaged a .NET application for end-user installation. Learning how <code>dotnet publish</code> works — specifically the <code>--self-contained</code> and <code>PublishSingleFile</code> flags — took some trial and error. Understanding that a single-file publish bundles the entire .NET runtime into one executable was a key insight: it means the installer works on machines that have no .NET installed at all.
+    <strong>Packaging for distribution.</strong> I had not previously packaged a .NET application for end-user installation. Learning how <code>dotnet publish</code> works, specifically the <code>--self-contained</code> and <code>PublishSingleFile</code> flags, took some trial and error. Understanding that a single-file publish bundles the entire .NET runtime into one executable was a key insight: it means the installer works on machines that have no .NET installed at all.
   </p>
 
   <h2>3. How will this course help you in your future career?</h2>
@@ -130,14 +130,14 @@
   </p>
 
   <ul>
-    <li><strong>Reading and extending unfamiliar code.</strong> The project started with starter code I did not write. Learning to read it critically — identifying what it did well and what it was missing — is exactly what happens when joining an existing team or inheriting a legacy codebase.</li>
+    <li><strong>Reading and extending unfamiliar code.</strong> The project started with starter code I did not write. Learning to read it critically, identifying what it did well and what it was missing, is exactly what happens when joining an existing team or inheriting a legacy codebase.</li>
     <li><strong>Designing for testability.</strong> Writing code that can be unit-tested requires discipline in keeping concerns separated. Employers consistently ask candidates about testing experience; having a concrete example where I refactored a class to support injection and then wrote meaningful tests is something I can speak to directly in interviews.</li>
     <li><strong>Structured logging.</strong> Adding Serilog and understanding how to use structured log entries for root cause analysis is a practical skill that applies to any production .NET application. Knowing how to read a log file and identify the root cause of a reported bug is a daily activity for working developers.</li>
     <li><strong>Packaging and release.</strong> Understanding how to produce an installer that end-users can run without any technical knowledge is the difference between a project that exists on a developer's laptop and one that real people can use. This experience with Inno Setup and self-contained publishing gives me a clear picture of what a release pipeline looks like at a small scale.</li>
   </ul>
 
   <p>
-    Overall, this course reinforced that software development is as much about communication, structure, and process as it is about writing code — and that the habits built here (documenting decisions, writing testable code, releasing properly) are exactly what professional teams expect.
+    Overall, this course reinforced that software development is as much about communication, structure, and process as it is about writing code, and that the habits built here (documenting decisions, writing testable code, releasing properly) are exactly what professional teams expect.
   </p>
 
 </body>
