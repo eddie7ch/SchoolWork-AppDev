@@ -158,5 +158,54 @@ namespace AwesomeChat.Tests
             Assert.NotNull(error);
             Assert.Contains("5000", error!);
         }
+
+        // ── SendMessageAsync — validation rejects before TCP ──────────────────
+        // These tests exercise the early-exit path in SendMessageAsync without
+        // needing a live server — validation throws ArgumentException first.
+
+        [Fact]
+        public async Task SendMessageAsync_EmptyMessage_ThrowsArgumentException()
+        {
+            // Arrange
+            var svc = new ChatService();
+
+            // Act & Assert — validation fires before any TCP connection
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => svc.SendMessageAsync("Eddie", string.Empty));
+        }
+
+        [Fact]
+        public async Task SendMessageAsync_WhitespaceMessage_ThrowsArgumentException()
+        {
+            // Arrange
+            var svc = new ChatService();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => svc.SendMessageAsync("Eddie", "   "));
+        }
+
+        [Fact]
+        public async Task SendMessageAsync_NullMessage_ThrowsArgumentException()
+        {
+            // Arrange
+            var svc = new ChatService();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => svc.SendMessageAsync("Eddie", null!));
+        }
+
+        [Fact]
+        public async Task SendMessageAsync_TooLongMessage_ThrowsArgumentException()
+        {
+            // Arrange — message exceeds MaxMessageLength
+            var svc = new ChatService();
+            string tooLong = new string('x', ChatService.MaxMessageLength + 1);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => svc.SendMessageAsync("Eddie", tooLong));
+        }
     }
 }

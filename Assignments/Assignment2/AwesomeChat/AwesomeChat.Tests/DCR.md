@@ -127,17 +127,18 @@ Run via: `dotnet test --collect:"XPlat Code Coverage"`
 | Test Class | Tests | Passed | Failed |
 |---|---|---|---|
 | `UserServiceTests` | 9 | 9 | 0 |
-| `ChatServiceTests` | 12 | 12 | 0 |
-| **Total** | **21** | **21** | **0** |
+| `ChatServiceTests` | 16 | 16 | 0 |
+| **Total** | **25** | **25** | **0** |
 
 ### Code Coverage (WinFormsApp1)
 
 | Class | Line Coverage |
 |---|---|
-| `UserService` | ~85% |
-| `ChatService` (DCR methods) | ~70% |
+| `UserService` | ~78% |
+| `ChatService` (pure methods + validation path) | ~53% overall |
 
-> `SendMessageAsync` and `SendOverTcp` are excluded from unit coverage because they require a live TCP connection. They are covered by manual integration testing (see `DebuggingNotes.md`).
+> Overall: **53% line / 64% branch** — within the 50–60% mastery target.
+> `SendOverTcp` is excluded from unit coverage because it requires a live TCP connection. It is covered by manual integration testing (see `DebuggingNotes.md`).
 
 ---
 

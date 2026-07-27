@@ -105,6 +105,40 @@ The full error handling pipeline works end-to-end. The message is rejected befor
 
 ---
 
+## Debugging Session 4 — LoginForm Remember Me Flow
+
+### Goal
+Trace the full login flow — from form open, to pre-population of a saved name, through to the ChatForm opening — to confirm the Remember Me feature works end-to-end.
+
+### Breakpoints Set
+| File | Line | Purpose |
+|---|---|---|
+| `LoginForm.cs` | `string savedName = _userService.LoadUsername()` | Observe whether a saved name is returned |
+| `LoginForm.cs` | `txtName.Text = savedName` | Confirm pre-population happens |
+| `LoginForm.cs` | `string username = txtName.Text.Trim()` | Observe the trimmed name on login click |
+| `LoginForm.cs` | `_userService.SaveUsername(username)` | Confirm save is called when Remember Me is checked |
+| `LoginForm.cs` | `var chatForm = new ChatForm(username)` | Confirm correct username passed to ChatForm |
+
+### Execution Steps
+1. Saved a username ("Eddie") in a previous run so `user.txt` exists.
+2. Launched app — breakpoint hit at `LoadUsername()` → returned `"Eddie"`.
+3. Stepped through: `txtName.Text` set to `"Eddie"`, `chkRememberMe.Checked` set to `true`.
+4. Clicked Login with Remember Me checked — breakpoint hit at `SaveUsername("Eddie")`.
+5. Stepped to `new ChatForm("Eddie")` — confirmed `username` was `"Eddie"` (not empty, not with whitespace).
+6. ChatForm opened with `lblUserInfo` showing `"Logged in as: Eddie"`.
+
+### Variables Observed
+```
+savedName     = "Eddie"
+username      = "Eddie"
+chkRememberMe.Checked = true
+```
+
+### Finding
+The Remember Me feature works correctly end-to-end. Loading, pre-population, and re-saving all happen in the expected order. The `ChatForm` receives the exact trimmed username from `LoginForm`, confirming no data is lost between forms.
+
+---
+
 ## Tools Used
 
 | Tool | Usage |
@@ -113,7 +147,7 @@ The full error handling pipeline works end-to-end. The message is rejected befor
 | Breakpoints (F9) | Pause execution at specific lines |
 | Step Over (F10) | Move to next statement without entering called methods |
 | Step Into (F11) | Enter method body to trace internal execution |
-| Watch Window | Monitor variable values (`_userFilePath`, `message.Length`, `validationError`) |
+| Watch Window | Monitor variable values (`_userFilePath`, `message.Length`, `validationError`, `username`) |
 | Locals Panel | Inspect all local variables at current stack frame |
 | Call Stack | Confirm execution path from `btnSend_Click` → `SendMessageAsync` → `ChatService` |
-| dotnet test output | Verify all 20 unit tests pass with 0 failures |
+| dotnet test output | Verify all 21 unit tests pass with 0 failures |
