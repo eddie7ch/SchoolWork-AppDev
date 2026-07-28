@@ -83,11 +83,20 @@ dotnet publish WinFormsApp1/WinFormsApp1.csproj -c Release -r win-x64 --self-con
 
 ### Installer Test Results
 
-| Machine | OS | .NET pre-installed | Install | Launch | Uninstall |
-|---|---|---|---|---|---|
-| Dev machine (Eddie) | Windows 11 | .NET 10 | ✅ | ✅ | ✅ |
+| Machine | OS | .NET pre-installed | Install | Launch | Chat (client + server) | Uninstall |
+|---|---|---|---|---|---|---|
+| Laptop (Eddie) | Windows 11 | .NET 10 | ✅ | ✅ | ✅ | ✅ |
+| Desktop (Eddie) | Windows 11 Pro | .NET 10 | ✅ | ✅ | ✅ | ✅ (after fix, see note) |
 
-> The installer is **self-contained** — it bundles the entire .NET runtime. No separate runtime installation is required on target machines. Tested install, application launch, and uninstall via Control Panel on the development machine. Classmates can verify on their own machines using the same `AwesomeChatSetup.exe`.
+> The installer is **self-contained** — it bundles the entire .NET runtime. No separate runtime installation is required on target machines. Tested install, application launch, chat connectivity (with `Server` running), and uninstall via Control Panel on two separate physical machines (laptop and desktop).
+>
+> **Known issue found on desktop test:** if `AwesomeChat.exe` is still running when the uninstaller executes, the file is locked and cannot be removed, so the uninstaller reported "Some elements could not be removed."
+>
+> **Debugging steps:**
+> 1. First attempt: added `CloseApplications=yes` (Inno Setup's Restart Manager integration) — **did not fix it**, since `yes` is already Inno Setup's default value, so it changed nothing.
+> 2. Second attempt: changed to `CloseApplications=force` — **still did not fix it**. Confirmed via direct testing (killing the process manually let the file delete instantly) that this was purely a file lock, not a permissions issue — Restart Manager simply wasn't terminating this WinForms process during uninstall.
+> 3. Root cause: Inno Setup's Restart Manager integration is unreliable for gracefully closing this app's message loop during uninstall.
+> 4. **Final fix:** added a `[Code]` section with a `CurUninstallStepChanged` handler that runs `taskkill /F /IM AwesomeChat.exe /T` at the start of the `usUninstall` step, before any files are removed. Re-tested on the desktop with the app left running during uninstall — the uninstaller now force-kills the process and reports "AwesomeChat was successfully removed from your computer" with no leftover-file warning.
 
 ---
 

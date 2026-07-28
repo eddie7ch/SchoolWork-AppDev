@@ -70,5 +70,5 @@ Address all three points:
 | Project | Criterion | Mastery Gap | Status |
 |---|---|---|---|
 | P2 | Code review | Classmate must comment on PR | ❌ Needs classmate comment |
-| P4 | Installer | Test on multiple machines | ❌ Only tested on one machine |
-| P4 | Documentation | Test on multiple machines | ❌ Only tested on one machine |
+| P4 | Installer | Test on multiple machines | ✅ Tested on laptop + desktop |
+| P4 | Documentation | Test on multiple machines | ✅ Tested on laptop + desktop |

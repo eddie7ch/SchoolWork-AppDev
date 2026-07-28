@@ -21,6 +21,9 @@ SolidCompression=yes
 WizardStyle=modern
 UninstallDisplayName={#MyAppName}
 UninstallDisplayIcon={app}\{#MyAppExeName}
+CloseApplications=force
+CloseApplicationsFilter=*.exe
+RestartApplications=no
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -39,3 +42,17 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  ResultCode: Integer;
+begin
+  // Restart Manager (CloseApplications) is unreliable at closing this WinForms
+  // app during uninstall, so force-kill it directly before files are removed.
+  if CurUninstallStep = usUninstall then
+  begin
+    Exec('taskkill.exe', '/F /IM {#MyAppExeName} /T', '', SW_HIDE,
+      ewWaitUntilTerminated, ResultCode);
+  end;
+end;
