@@ -35,3 +35,6 @@ yarn-error.log*
 *.suo
 *.userosscache
 *.sln.docstates
+
+# OneDrive-linked shared assets (see setup-onedrive-assets.ps1)
+/Assets/
