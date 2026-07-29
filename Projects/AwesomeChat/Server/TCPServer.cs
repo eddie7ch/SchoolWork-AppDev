@@ -23,28 +23,36 @@ namespace TcpServer
             {
                 const int bytesize = 1024 * 1024;
 
-                string? message = null;
                 byte[] buffer = new byte[bytesize];
 
                 var sender = listener.AcceptTcpClient();
-                sender.GetStream().Read(buffer, 0, bytesize);
+                using var stream = sender.GetStream();
+
+                int totalRead = 0;
+                int bytesRead;
+                while ((bytesRead = stream.Read(buffer, totalRead, bytesize - totalRead)) > 0)
+                {
+                    totalRead += bytesRead;
+                    if (!stream.DataAvailable)
+                        break;
+                }
 
                 // Read the message and perform different actions  
-                message = cleanMessage(buffer);
+                string message = cleanMessage(buffer);
 
                 byte[] bytes = System.Text.Encoding.Unicode.GetBytes(message);
                 Console.WriteLine("your message is: {0}", message);
-                sender.GetStream().Write(bytes, 0, bytes.Length);
+                stream.Write(bytes, 0, bytes.Length);
             }
         }
 
-       
+
 
         private static string cleanMessage(byte[] bytes)
         {
             string message = System.Text.Encoding.Unicode.GetString(bytes);
 
-            string messageToPrint = null;
+            string messageToPrint = string.Empty;
             foreach (var nullChar in message)
             {
                 if (nullChar != '\0')
