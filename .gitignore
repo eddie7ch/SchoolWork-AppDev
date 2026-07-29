@@ -35,3 +35,6 @@ yarn-error.log*
 *.suo
 *.userosscache
 *.sln.docstates
+
+# OneDrive-synced assets (see OneDrive\Project folder\OneDrive-Git-Hybrid-Setup.md)
+Assets/
