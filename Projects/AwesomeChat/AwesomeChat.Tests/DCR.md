@@ -1,6 +1,6 @@
 # DCR — Design Change Request: Testability Improvements
 
-**Project:** AwesomeChat (SODV2452-01 Application Development — Project 3)  
+**Project:** AwesomeChat (SODV2452-01 Application Development — Project 4)  
 **Author:** Eddie Chongtham  
 **Date:** July 2026  
 **Branch:** `feature/project3-testing`

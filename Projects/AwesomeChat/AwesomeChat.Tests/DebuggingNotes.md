@@ -1,9 +1,9 @@
-# Debugging Notes — AwesomeChat (Project 3)
+# Debugging Notes — AwesomeChat (Project 4)
 
-**Project:** AwesomeChat (SODV2452-01 Application Development — Project 3)  
+**Project:** AwesomeChat (SODV2452-01 Application Development — Project 4)  
 **Author:** Eddie Chongtham  
 **Purpose:** Documents debugging activities performed using VS Code / Visual Studio tools.  
-This satisfies Project 3 Criterion 3: Use debugging tools (set breakpoints, step into code, observe variables).
+This satisfies Project 4's debugging/logging evidence (set breakpoints, step into code, observe variables).
 
 ---
 
