@@ -1,0 +1,67 @@
+AwesomeChat - Installation Guide for End Users
+================================================
+
+This guide explains how to install, launch, and uninstall AwesomeChat on your
+Windows computer. No technical background is required.
+
+Requirements
+------------
+- Windows 10 or Windows 11 (64-bit)
+- Nothing else needs to be installed first - the installer includes everything
+  AwesomeChat needs to run.
+
+How to Install
+---------------
+1. Locate the file AwesomeChatSetup.exe (found in the Installer\Output folder
+   of the project, or wherever you received it from).
+2. Double-click AwesomeChatSetup.exe to start the installer.
+3. If Windows shows a "Windows protected your PC" SmartScreen warning, click
+   "More info" then "Run anyway". This appears because the app is not signed
+   with a paid code-signing certificate - it is still safe to run.
+4. Follow the setup wizard:
+   - Click "Next" on the welcome screen.
+   - Choose whether to create a desktop shortcut.
+   - Click "Install".
+5. When the wizard finishes, click "Finish" to close it.
+
+How to Launch AwesomeChat
+--------------------------
+- Use the desktop shortcut, if you created one, or
+- Open the Start Menu and search for "AwesomeChat".
+
+Important: AwesomeChat is a chat CLIENT. Before you can send messages, the
+AwesomeChat Server must already be running (on this computer or on another
+computer on your network) and listening on port 1234. Ask whoever is hosting
+the chat session to start the Server first.
+
+First-Time Login
+-----------------
+1. When AwesomeChat opens, type your name on the Login screen.
+2. Check "Remember Me" if you don't want to re-type your name next time.
+3. Click "Login" (or press Enter).
+
+Sending Messages
+-----------------
+- Type your message in the box at the bottom of the window.
+- Click "Send" or press Enter.
+- Your own messages appear in blue; replies from the server appear in green.
+- Messages longer than 2,000 characters are rejected - shorten them and try again.
+
+How to Uninstall
+------------------
+1. Open the Windows Start Menu and search for "Add or Remove Programs"
+   (or go to Settings > Apps > Installed apps).
+2. Find "AwesomeChat" in the list.
+3. Click it, then click "Uninstall", and confirm.
+4. Windows will remove AwesomeChat from your computer.
+   (If AwesomeChat is still open, the uninstaller will close it automatically
+   before removing its files.)
+
+Troubleshooting
+-----------------
+- "Messages aren't sending" -> make sure the Server is running before you try
+  to chat.
+- Windows SmartScreen warning during install -> click "More info" then "Run
+  anyway" (see step 3 under How to Install).
+- Need developer-level detail (build-from-source steps, logs, architecture)?
+  See README.md in the project repository.
